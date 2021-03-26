@@ -1,38 +1,37 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/domain/todo.dart';
+import 'package:flutter_todo_app/models/todos_model.dart';
+import 'package:provider/provider.dart';
 
 class TodosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TODO一覧'),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('todos').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went wrong');
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
-
-          if (snapshot.data.docs.length == 0) {
-            return Text("No Data");
-          }
-
-          return ListView(
-            children: snapshot.data.docs.map(
-              (DocumentSnapshot document) {
-                return ListTile(
-                  title: Text(
-                    document.data()['title'],
-                  ),
-                );
+    return ChangeNotifierProvider<TodosModel>(
+      create: (_) => TodosModel(),
+      child: Consumer<TodosModel>(
+        builder: (BuildContext context, TodosModel todosModel, Widget child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('TODO一覧'),
+            ),
+            body: ListView(
+              children: todosModel.todos.map(
+                (Todo todo) {
+                  return ListTile(
+                    title: Text(
+                      todo.title,
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () async {
+                await Navigator.pushNamed(context, '/todos/new');
+                todosModel.fetchTodos();
               },
-            ).toList(),
+            ),
           );
         },
       ),
