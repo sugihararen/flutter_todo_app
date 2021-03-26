@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/screens/add_todo_screen.dart';
-import 'package:flutter_todo_app/screens/todos_screen.dart';
+import 'package:flutter_todo_app/screens/todo/add_todo_screen.dart';
+import 'package:flutter_todo_app/screens/todo/edit_todo_screen.dart';
+import 'package:flutter_todo_app/screens/todo/todos_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,17 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/todos': (_) => TodosScreen(),
         '/todos/new': (_) => AddTodoScreen(),
+      },
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/todos/edit':
+            return MaterialPageRoute(
+              builder: (context) => EditTodoScreen(settings.arguments),
+            );
+            break;
+          default:
+            return null;
+        }
       },
     );
   }

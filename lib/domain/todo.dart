@@ -1,7 +1,10 @@
 class Todo {
+  final String documentId;
   final String title;
 
-  Todo({this.title});
+  Todo({this.documentId, this.title});
 
-  Todo.fromJson(Map<String, dynamic> json) : title = json['title'];
+  Todo.fromJson(Map<String, dynamic> json)
+      : documentId = json['documentId'],
+        title = json['title'];
 }

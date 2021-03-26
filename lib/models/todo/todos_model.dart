@@ -9,13 +9,16 @@ class TodosModel extends ChangeNotifier {
 
   List<Todo> todos = [];
 
-  Future fetchTodos() async {
+  Future<void> fetchTodos() async {
     final QuerySnapshot snapshots =
         await FirebaseFirestore.instance.collection('todos').get();
     this.todos = snapshots.docs
         .map(
-          (QueryDocumentSnapshot doc) => Todo.fromJson(
-            doc.data(),
+          (QueryDocumentSnapshot document) => Todo.fromJson(
+            {
+              'documentId': document.id,
+              ...document.data(),
+            },
           ),
         )
         .toList();

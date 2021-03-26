@@ -18,9 +18,15 @@ class TodosScreen extends StatelessWidget {
               children: todosModel.todos.map(
                 (Todo todo) {
                   return ListTile(
-                    title: Text(
-                      todo.title,
-                    ),
+                    title: Text(todo.title),
+                    onTap: () async {
+                      await Navigator.pushNamed(
+                        context,
+                        '/todos/edit',
+                        arguments: todo,
+                      );
+                      todosModel.fetchTodos();
+                    },
                   );
                 },
               ).toList(),
