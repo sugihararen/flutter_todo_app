@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/domain/todo.dart';
-import 'package:flutter_todo_app/models/todos_model.dart';
+import 'package:flutter_todo_app/models/todo/todos_model.dart';
 import 'package:provider/provider.dart';
 
 class TodosScreen extends StatelessWidget {
@@ -17,16 +17,26 @@ class TodosScreen extends StatelessWidget {
             body: ListView(
               children: todosModel.todos.map(
                 (Todo todo) {
-                  return ListTile(
-                    title: Text(todo.title),
-                    onTap: () async {
-                      await Navigator.pushNamed(
-                        context,
-                        '/todos/edit',
-                        arguments: todo,
-                      );
-                      todosModel.fetchTodos();
-                    },
+                  return Card(
+                    child: Dismissible(
+                      key: ObjectKey(todo),
+                      onDismissed: (DismissDirection direction) async {
+                        await todosModel.deleteTodo(todo.documentId);
+                        todosModel.fetchTodos();
+                      },
+                      background: Container(color: Colors.red),
+                      child: ListTile(
+                        title: Text(todo.title),
+                        onTap: () async {
+                          await Navigator.pushNamed(
+                            context,
+                            '/todos/edit',
+                            arguments: todo,
+                          );
+                          todosModel.fetchTodos();
+                        },
+                      ),
+                    ),
                   );
                 },
               ).toList(),

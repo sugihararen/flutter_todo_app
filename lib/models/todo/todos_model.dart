@@ -25,4 +25,11 @@ class TodosModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> deleteTodo(String documentId) async {
+    await FirebaseFirestore.instance
+        .collection('todos')
+        .doc(documentId)
+        .delete();
+  }
 }
