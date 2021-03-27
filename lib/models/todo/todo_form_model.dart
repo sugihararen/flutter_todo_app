@@ -8,6 +8,7 @@ class TodoFormModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String documentId;
   String title;
+  bool isLoading = false;
 
   TodoFormModel(Todo todo) {
     if (todo == null) return;
@@ -17,6 +18,9 @@ class TodoFormModel extends ChangeNotifier {
   }
 
   Future<void> addTodo() async {
+    isLoading = true;
+    notifyListeners();
+
     await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser.uid)
@@ -27,9 +31,15 @@ class TodoFormModel extends ChangeNotifier {
         'createdAt': Timestamp.now(),
       },
     );
+
+    isLoading = false;
+    notifyListeners();
   }
 
   Future<void> editTodo() async {
+    isLoading = true;
+    notifyListeners();
+
     await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser.uid)
@@ -41,5 +51,8 @@ class TodoFormModel extends ChangeNotifier {
         'updatedAt': Timestamp.now(),
       },
     );
+
+    isLoading = false;
+    notifyListeners();
   }
 }

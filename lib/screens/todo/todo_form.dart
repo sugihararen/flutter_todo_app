@@ -1,5 +1,6 @@
 import 'package:flutter_todo_app/domain/todo.dart';
 import 'package:flutter_todo_app/models/todo/todo_form_model.dart';
+import 'package:flutter_todo_app/widget/overlay_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -52,52 +53,74 @@ class TodoForm extends StatelessWidget {
       child: Consumer<TodoFormModel>(
         builder:
             (BuildContext context, TodoFormModel todoFormModel, Widget child) {
-          return Form(
-            key: todoFormModel.formKey,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: 'Title',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xffCECECE)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xffCECECE)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                    autofocus: true,
-                    initialValue: todoFormModel.title,
-                    validator: validator,
-                    onChanged: (String value) =>
-                        todoFormModel.title = value.trim(),
+          return Stack(
+            children: <Widget>[
+              Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: Text(
+                    todo == null ? 'TODO追加' : 'TODO編集',
+                    style: TextStyle(color: Colors.black),
                   ),
-                  SizedBox(height: 16),
-                  RaisedButton(
-                    color: Colors.white,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(8.0),
+                  backgroundColor: Colors.white,
+                  leading: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
                     ),
-                    onPressed: () => onPressed(context, todoFormModel),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+                body: Form(
+                  key: todoFormModel.formKey,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Title',
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffCECECE)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffCECECE)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                          autofocus: true,
+                          initialValue: todoFormModel.title,
+                          validator: validator,
+                          onChanged: (String value) =>
+                              todoFormModel.title = value.trim(),
+                        ),
+                        SizedBox(height: 16),
+                        RaisedButton(
+                          color: Colors.white,
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(8.0),
+                          ),
+                          onPressed: () => onPressed(context, todoFormModel),
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+              OverlayLoading(todoFormModel.isLoading)
+            ],
           );
         },
       ),

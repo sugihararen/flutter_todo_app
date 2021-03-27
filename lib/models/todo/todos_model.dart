@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 class TodosModel extends ChangeNotifier {
   final User currentUser = FirebaseAuth.instance.currentUser;
   List<Todo> todos = [];
+  bool isLoading = true;
 
   Future<void> fetchTodos() async {
+    isLoading = true;
+    notifyListeners();
+
     final QuerySnapshot snapshots = await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser.uid)
@@ -24,15 +28,22 @@ class TodosModel extends ChangeNotifier {
         )
         .toList();
 
+    isLoading = false;
     notifyListeners();
   }
 
   Future<void> deleteTodo(String documentId) async {
+    isLoading = true;
+    notifyListeners();
+
     await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUser.uid)
         .collection('todos')
         .doc(documentId)
         .delete();
+
+    isLoading = false;
+    notifyListeners();
   }
 }

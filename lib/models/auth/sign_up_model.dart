@@ -7,12 +7,28 @@ class SignUpModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  bool isLoading = false;
 
   Future signUp() async {
-    await auth.createUserWithEmailAndPassword(email: email, password: password);
+    isLoading = true;
+    notifyListeners();
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('email', email);
-    prefs.setString('password', password);
+    try {
+      await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', email);
+      prefs.setString('password', password);
+    } catch (e) {
+      email = '';
+      password = '';
+      notifyListeners();
+
+      return '登録に失敗しました';
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }
