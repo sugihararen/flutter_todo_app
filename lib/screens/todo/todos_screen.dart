@@ -12,7 +12,12 @@ class TodosScreen extends StatelessWidget {
         builder: (BuildContext context, TodosModel todosModel, Widget child) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('TODO一覧'),
+              centerTitle: true,
+              title: Text(
+                'TODO一覧',
+                style: TextStyle(color: Colors.black),
+              ),
+              backgroundColor: Colors.white,
             ),
             body: ListView(
               children: todosModel.todos.map(
@@ -42,7 +47,11 @@ class TodosScreen extends StatelessWidget {
               ).toList(),
             ),
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add),
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+              backgroundColor: Colors.white,
               onPressed: () async {
                 await Navigator.pushNamed(context, '/todos/new');
                 todosModel.fetchTodos();

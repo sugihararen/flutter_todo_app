@@ -25,10 +25,16 @@ class TodoForm extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
             title: Text('保存しました！'),
             actions: <Widget>[
               FlatButton(
-                child: Text('OK'),
+                child: Text(
+                  'OK',
+                  style: TextStyle(color: Colors.black),
+                ),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],
@@ -55,22 +61,40 @@ class TodoForm extends StatelessWidget {
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       hintText: 'Title',
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(width: 2, color: Color(0xffCECECE))),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xffCECECE))),
+                        borderSide: BorderSide(color: Color(0xffCECECE)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xffCECECE)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
                     ),
+                    autofocus: true,
                     initialValue: todoFormModel.title,
                     validator: validator,
                     onChanged: (String value) =>
                         todoFormModel.title = value.trim(),
                   ),
                   SizedBox(height: 16),
-                  ElevatedButton(
+                  RaisedButton(
+                    color: Colors.white,
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(8.0),
+                    ),
                     onPressed: () => onPressed(context, todoFormModel),
-                    child: Text('Submit'),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
