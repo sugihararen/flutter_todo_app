@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/models/auth/sign_up_model.dart';
 import 'package:flutter_todo_app/shared/validator.dart';
-import 'package:flutter_todo_app/widget/overlay_loading.dart';
+import 'package:flutter_todo_app/widget/loading/overlay_loading.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -81,9 +81,8 @@ class SignUpScreen extends StatelessWidget {
                             ),
                           ),
                           autofocus: true,
+                          controller: signUpModel.emailEditingController,
                           validator: (String value) => Validator.empty(value),
-                          onChanged: (String value) =>
-                              signUpModel.email = value.trim(),
                         ),
                         SizedBox(height: 24),
                         TextFormField(
@@ -103,9 +102,8 @@ class SignUpScreen extends StatelessWidget {
                           ),
                           autofocus: true,
                           obscureText: true,
+                          controller: signUpModel.passwordEditingController,
                           validator: (String value) => Validator.empty(value),
-                          onChanged: (String value) =>
-                              signUpModel.password = value.trim(),
                         ),
                         SizedBox(height: 16),
                         RaisedButton(

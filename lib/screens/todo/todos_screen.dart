@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/domain/todo.dart';
 import 'package:flutter_todo_app/models/main_model.dart';
 import 'package:flutter_todo_app/models/todo/todos_model.dart';
-import 'package:flutter_todo_app/widget/overlay_loading.dart';
+import 'package:flutter_todo_app/widget/loading/overlay_loading.dart';
 import 'package:provider/provider.dart';
 
 class TodosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    signOut() {
-      context.read<MainModel>().signOut();
-    }
-
     return ChangeNotifierProvider<TodosModel>(
       create: (_) => TodosModel()..fetchTodos(),
       child: Consumer<TodosModel>(
@@ -31,7 +27,10 @@ class TodosScreen extends StatelessWidget {
                     actions: [
                       Center(
                         child: InkWell(
-                          onTap: () => signOut(),
+                          onTap: () async {
+                            await todosModel.signOut();
+                            Navigator.of(context).pushNamed('/sign_in');
+                          },
                           child: Text(
                             'SignOut',
                             style: TextStyle(color: Colors.black),

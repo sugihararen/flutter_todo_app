@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/domain/todo.dart';
-import 'package:flutter_todo_app/screens/todo/todo_form.dart';
+import 'package:flutter_todo_app/widget/todo/todo_form.dart';
 
 class EditTodoScreen extends StatelessWidget {
   final Todo todo;

@@ -1,7 +1,7 @@
 import 'package:flutter_todo_app/domain/todo.dart';
 import 'package:flutter_todo_app/models/todo/todo_form_model.dart';
 import 'package:flutter_todo_app/shared/validator.dart';
-import 'package:flutter_todo_app/widget/overlay_loading.dart';
+import 'package:flutter_todo_app/widget/loading/overlay_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -16,26 +16,6 @@ class TodoForm extends StatelessWidget {
           ? await todoFormModel.addTodo()
           : await todoFormModel.editTodo();
 
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-            ),
-            title: Text('保存しました'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  'OK',
-                  style: TextStyle(color: Colors.black),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
-      );
       Navigator.of(context).pop();
     }
   }

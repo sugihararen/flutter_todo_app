@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_todo_app/domain/todo.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TodosModel extends ChangeNotifier {
   final User currentUser = FirebaseAuth.instance.currentUser;
@@ -45,5 +46,12 @@ class TodosModel extends ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+  }
+
+  Future signOut() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.remove('email');
+    prefs.remove('password');
   }
 }

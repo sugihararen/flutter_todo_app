@@ -62,7 +62,7 @@ class Home extends StatelessWidget {
             return SplashScreen();
           }
 
-          if (mainModel.currentUer != null) {
+          if (mainModel.currentUser != null) {
             return TodosScreen();
           }
 

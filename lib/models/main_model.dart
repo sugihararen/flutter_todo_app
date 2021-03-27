@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MainModel extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool loading = true;
-  User currentUer;
+  User currentUser;
 
   Future signIn() async {
     loading = true;
@@ -24,19 +24,8 @@ class MainModel extends ChangeNotifier {
 
     final UserCredential userCredential =
         await auth.signInWithEmailAndPassword(email: email, password: password);
-    currentUer = userCredential.user;
+    currentUser = userCredential.user;
     loading = false;
-    notifyListeners();
-  }
-
-  Future signOut() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    prefs.remove('email');
-    prefs.remove('password');
-    auth.signOut();
-
-    currentUer = null;
     notifyListeners();
   }
 }

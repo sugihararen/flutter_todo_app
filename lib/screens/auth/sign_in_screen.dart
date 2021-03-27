@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/models/auth/sign_in_model.dart';
 import 'package:flutter_todo_app/shared/validator.dart';
-import 'package:flutter_todo_app/widget/overlay_loading.dart';
+import 'package:flutter_todo_app/widget/loading/overlay_loading.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -41,97 +41,103 @@ class SignInScreen extends StatelessWidget {
       create: (_) => SignInModel(),
       child: Consumer<SignInModel>(
         builder: (BuildContext context, SignInModel signInModel, Widget child) {
-          return Stack(
-            children: <Widget>[
-              Scaffold(
-                appBar: AppBar(
-                  centerTitle: true,
-                  title: Text(
-                    'Sign In',
-                    style: TextStyle(color: Colors.black),
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: Stack(
+              children: <Widget>[
+                Scaffold(
+                  appBar: AppBar(
+                    centerTitle: true,
+                    title: Text(
+                      'Sign In',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    backgroundColor: Colors.white,
                   ),
-                  backgroundColor: Colors.white,
-                ),
-                body: Form(
-                  key: signInModel.formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Email',
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffCECECE)),
+                  body: Form(
+                    key: signInModel.formKey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Email',
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffCECECE)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffCECECE)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffCECECE)),
+                            autofocus: true,
+                            controller: signInModel.emailEditingController,
+                            validator: (String value) => Validator.email(value),
+                          ),
+                          SizedBox(height: 24),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Password',
+                              border: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffCECECE)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffCECECE)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
+                            autofocus: true,
+                            obscureText: true,
+                            controller: signInModel.passwordEditingController,
+                            validator: (String value) => Validator.empty(value),
+                          ),
+                          SizedBox(height: 16),
+                          InkWell(
+                            onTap: () =>
+                                Navigator.pushNamed(context, '/sign_up'),
+                            child: Text(
+                              'Sgin Up',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline),
                             ),
                           ),
-                          autofocus: true,
-                          validator: (String value) => Validator.email(value),
-                          onChanged: (String value) =>
-                              signInModel.email = value.trim(),
-                        ),
-                        SizedBox(height: 24),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Password',
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffCECECE)),
+                          SizedBox(height: 16),
+                          RaisedButton(
+                            color: Colors.white,
+                            textColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0),
                             ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffCECECE)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
+                            onPressed: () => onPressed(context, signInModel),
+                            child: Text(
+                              'Submit',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
-                          autofocus: true,
-                          obscureText: true,
-                          validator: (String value) => Validator.empty(value),
-                          onChanged: (String value) =>
-                              signInModel.password = value.trim(),
-                        ),
-                        SizedBox(height: 16),
-                        InkWell(
-                          onTap: () => Navigator.pushNamed(context, '/sign_up'),
-                          child: Text(
-                            'Sgin Up',
-                            style:
-                                TextStyle(decoration: TextDecoration.underline),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        RaisedButton(
-                          color: Colors.white,
-                          textColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(8.0),
-                          ),
-                          onPressed: () => onPressed(context, signInModel),
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              OverlayLoading(signInModel.isLoading)
-            ],
+                OverlayLoading(signInModel.isLoading)
+              ],
+            ),
           );
         },
       ),
