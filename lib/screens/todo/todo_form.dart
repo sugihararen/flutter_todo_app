@@ -28,7 +28,7 @@ class TodoForm extends StatelessWidget {
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
-            title: Text('保存しました！'),
+            title: Text('保存しました'),
             actions: <Widget>[
               FlatButton(
                 child: Text(
@@ -57,7 +57,6 @@ class TodoForm extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
                     decoration: InputDecoration(
