@@ -1,5 +1,6 @@
 import 'package:flutter_todo_app/domain/todo.dart';
 import 'package:flutter_todo_app/models/todo/todo_form_model.dart';
+import 'package:flutter_todo_app/shared/validator.dart';
 import 'package:flutter_todo_app/widget/overlay_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +8,6 @@ import 'package:flutter/material.dart';
 class TodoForm extends StatelessWidget {
   final Todo todo;
   TodoForm({this.todo});
-
-  String validator(String value) {
-    if (value.isEmpty) {
-      return 'Please enter some text';
-    }
-    return null;
-  }
 
   Future<void> onPressed(
       BuildContext context, TodoFormModel todoFormModel) async {
@@ -94,7 +88,7 @@ class TodoForm extends StatelessWidget {
                           ),
                           autofocus: true,
                           initialValue: todoFormModel.title,
-                          validator: validator,
+                          validator: (String value) => Validator.empty(value),
                           onChanged: (String value) =>
                               todoFormModel.title = value.trim(),
                         ),

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/models/auth/sign_in_model.dart';
+import 'package:flutter_todo_app/shared/validator.dart';
 import 'package:flutter_todo_app/widget/overlay_loading.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatelessWidget {
-  String validator(String value) {
-    if (value.isEmpty) {
-      return 'Please enter some text';
-    }
-    return null;
-  }
-
   Future<void> onPressed(BuildContext context, SignInModel signInModel) async {
     if (signInModel.formKey.currentState.validate()) {
       final response = await signInModel.signIn();
@@ -80,7 +74,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                           ),
                           autofocus: true,
-                          validator: validator,
+                          validator: (String value) => Validator.email(value),
                           onChanged: (String value) =>
                               signInModel.email = value.trim(),
                         ),
@@ -102,7 +96,7 @@ class SignInScreen extends StatelessWidget {
                           ),
                           autofocus: true,
                           obscureText: true,
-                          validator: validator,
+                          validator: (String value) => Validator.empty(value),
                           onChanged: (String value) =>
                               signInModel.password = value.trim(),
                         ),
