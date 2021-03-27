@@ -24,7 +24,7 @@ class TodosScreen extends StatelessWidget {
                         await todosModel.deleteTodo(todo.documentId);
                         todosModel.fetchTodos();
                       },
-                      background: Container(color: Colors.red),
+                      background: Container(color: Colors.green),
                       child: ListTile(
                         title: Text(todo.title),
                         onTap: () async {

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/screens/splash_screen.dart';
 import 'package:flutter_todo_app/screens/todo/add_todo_screen.dart';
 import 'package:flutter_todo_app/screens/todo/edit_todo_screen.dart';
 import 'package:flutter_todo_app/screens/todo/todos_screen.dart';
@@ -20,7 +21,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TodosScreen(),
+      home: FutureBuilder(
+        future: Future.delayed(Duration(seconds: 3)),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done)
+            return TodosScreen();
+
+          return SplashScreen();
+        },
+      ),
       routes: <String, WidgetBuilder>{
         '/todos': (_) => TodosScreen(),
         '/todos/new': (_) => AddTodoScreen(),
