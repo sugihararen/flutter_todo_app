@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class OverlayLoading extends StatelessWidget {
   final bool visible;
   OverlayLoading(this.visible);
+
   @override
   Widget build(BuildContext context) {
     return Visibility(

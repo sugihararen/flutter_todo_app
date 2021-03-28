@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/domain/todo.dart';
-import 'package:flutter_todo_app/models/main_model.dart';
 import 'package:flutter_todo_app/models/todo/todos_model.dart';
 import 'package:flutter_todo_app/widget/loading/overlay_loading.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,7 @@ class TodosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TodosModel>(
-      create: (_) => TodosModel()..fetchTodos(),
+      create: (_) => TodosModel()..fetchTodos(context),
       child: Consumer<TodosModel>(
         builder: (BuildContext context, TodosModel todosModel, Widget child) {
           return WillPopScope(
@@ -52,13 +51,14 @@ class TodosScreen extends StatelessWidget {
                                 '/todos/edit',
                                 arguments: todo,
                               );
-                              todosModel.fetchTodos();
+                              todosModel.fetchTodos(context);
                             },
                             trailing: IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () async {
-                                await todosModel.deleteTodo(todo.documentId);
-                                await todosModel.fetchTodos();
+                                await todosModel.deleteTodo(
+                                    context, todo.documentId);
+                                await todosModel.fetchTodos(context);
                               },
                             ),
                           ),
@@ -74,7 +74,7 @@ class TodosScreen extends StatelessWidget {
                     backgroundColor: Colors.white,
                     onPressed: () async {
                       await Navigator.pushNamed(context, '/todos/new');
-                      todosModel.fetchTodos();
+                      todosModel.fetchTodos(context);
                     },
                   ),
                 ),

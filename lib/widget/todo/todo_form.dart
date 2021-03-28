@@ -13,8 +13,8 @@ class TodoForm extends StatelessWidget {
       BuildContext context, TodoFormModel todoFormModel) async {
     if (todoFormModel.formKey.currentState.validate()) {
       todo == null
-          ? await todoFormModel.addTodo()
-          : await todoFormModel.editTodo();
+          ? await todoFormModel.addTodo(context)
+          : await todoFormModel.editTodo(context);
 
       Navigator.of(context).pop();
     }

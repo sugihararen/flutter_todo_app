@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/domain/todo.dart';
+import 'package:flutter_todo_app/repositories/todo_repository.dart';
 
 class TodoFormModel extends ChangeNotifier {
-  final User currentUser = FirebaseAuth.instance.currentUser;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String documentId;
   String title;
@@ -17,40 +15,21 @@ class TodoFormModel extends ChangeNotifier {
     title = todo.title;
   }
 
-  Future<void> addTodo() async {
+  Future<void> addTodo(BuildContext context) async {
     isLoading = true;
     notifyListeners();
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUser.uid)
-        .collection('todos')
-        .add(
-      {
-        'title': title,
-        'createdAt': Timestamp.now(),
-      },
-    );
+    await TodoRepository().add(context, title);
 
     isLoading = false;
     notifyListeners();
   }
 
-  Future<void> editTodo() async {
+  Future<void> editTodo(BuildContext context) async {
     isLoading = true;
     notifyListeners();
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUser.uid)
-        .collection('todos')
-        .doc(documentId)
-        .update(
-      {
-        'title': title,
-        'updatedAt': Timestamp.now(),
-      },
-    );
+    await TodoRepository().edit(context, documentId, title);
 
     isLoading = false;
     notifyListeners();

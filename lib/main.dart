@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/repositories/auth_repository.dart';
 import 'package:flutter_todo_app/screens/auth/sign_in_screen.dart';
 import 'package:flutter_todo_app/screens/auth/sign_up_screen.dart';
 import 'package:flutter_todo_app/screens/splash_screen.dart';
@@ -18,31 +19,36 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Todo App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthRepository()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Todo App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Home(),
+        routes: <String, WidgetBuilder>{
+          '/sign_in': (_) => SignInScreen(),
+          '/sign_up': (_) => SignUpScreen(),
+          '/todos': (_) => TodosScreen(),
+          '/todos/new': (_) => AddTodoScreen(),
+        },
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/todos/edit':
+              return MaterialPageRoute(
+                builder: (context) => EditTodoScreen(settings.arguments),
+              );
+              break;
+            default:
+              return null;
+          }
+        },
       ),
-      home: Home(),
-      routes: <String, WidgetBuilder>{
-        '/sign_in': (_) => SignInScreen(),
-        '/sign_up': (_) => SignUpScreen(),
-        '/todos': (_) => TodosScreen(),
-        '/todos/new': (_) => AddTodoScreen(),
-      },
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case '/todos/edit':
-            return MaterialPageRoute(
-              builder: (context) => EditTodoScreen(settings.arguments),
-            );
-            break;
-          default:
-            return null;
-        }
-      },
     );
   }
 }
@@ -51,7 +57,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MainModel>(
-      create: (_) => MainModel()..signIn(),
+      create: (_) => MainModel()..load(context),
       child: Consumer<MainModel>(
         builder: (
           BuildContext context,

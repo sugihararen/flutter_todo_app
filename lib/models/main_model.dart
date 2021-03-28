@@ -1,30 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_todo_app/repositories/auth_repository.dart';
+import 'package:provider/provider.dart';
 
 class MainModel extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool loading = true;
   User currentUser;
 
-  Future signIn() async {
+  Future load(BuildContext context) async {
     loading = true;
     notifyListeners();
 
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await Provider.of<AuthRepository>(context, listen: false).loadAccount();
+    currentUser =
+        Provider.of<AuthRepository>(context, listen: false).currentUser;
 
-    final String email = prefs.get('email');
-    final String password = prefs.get('password');
-
-    if (email == null || password == null) {
-      loading = false;
-      notifyListeners();
-      return;
-    }
-
-    final UserCredential userCredential =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-    currentUser = userCredential.user;
     loading = false;
     notifyListeners();
   }

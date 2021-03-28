@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class SignInScreen extends StatelessWidget {
   Future<void> onPressed(BuildContext context, SignInModel signInModel) async {
     if (signInModel.formKey.currentState.validate()) {
-      final response = await signInModel.signIn();
+      final response = await signInModel.signIn(context);
       if (response != null) {
         await showDialog(
           context: context,
