@@ -1,13 +1,15 @@
 import 'package:flutter_todo_app/domain/todo.dart';
 import 'package:flutter_todo_app/models/todo/todo_form_model.dart';
 import 'package:flutter_todo_app/shared/validator.dart';
+import 'package:flutter_todo_app/widget/button/primary_button.dart';
 import 'package:flutter_todo_app/widget/loading/overlay_loading.dart';
+import 'package:flutter_todo_app/widget/text_field/primary_text_form_field.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-class TodoForm extends StatelessWidget {
+class TodoFormScreen extends StatelessWidget {
   final Todo todo;
-  TodoForm({this.todo});
+  TodoFormScreen({this.todo});
 
   Future<void> onPressed(
       BuildContext context, TodoFormModel todoFormModel) async {
@@ -31,9 +33,8 @@ class TodoForm extends StatelessWidget {
             children: <Widget>[
               Scaffold(
                 appBar: AppBar(
-                  centerTitle: true,
                   title: Text(
-                    todo == null ? 'TODO追加' : 'TODO編集',
+                    todo == null ? 'ADD TODO' : 'EDIT TODO',
                     style: TextStyle(color: Colors.black),
                   ),
                   backgroundColor: Colors.white,
@@ -50,43 +51,19 @@ class TodoForm extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Title',
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffCECECE)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xffCECECE)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                            ),
-                          ),
+                        PrimaryTextFormField(
+                          hintText: 'Title',
+                          textEditingController:
+                              todoFormModel.titleEditingController,
                           autofocus: true,
-                          initialValue: todoFormModel.title,
                           validator: (String value) => Validator.empty(value),
-                          onChanged: (String value) =>
-                              todoFormModel.title = value.trim(),
                         ),
                         SizedBox(height: 16),
-                        RaisedButton(
-                          color: Colors.white,
-                          textColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(8.0),
-                          ),
+                        PrimaryButton(
+                          text: 'SUBMIT',
                           onPressed: () => onPressed(context, todoFormModel),
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
                         ),
                       ],
                     ),

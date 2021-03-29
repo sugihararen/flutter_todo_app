@@ -4,8 +4,7 @@ import 'package:flutter_todo_app/repositories/auth_repository.dart';
 import 'package:flutter_todo_app/screens/auth/sign_in_screen.dart';
 import 'package:flutter_todo_app/screens/auth/sign_up_screen.dart';
 import 'package:flutter_todo_app/screens/splash_screen.dart';
-import 'package:flutter_todo_app/screens/todo/add_todo_screen.dart';
-import 'package:flutter_todo_app/screens/todo/edit_todo_screen.dart';
+import 'package:flutter_todo_app/screens/todo/todo_form_screen.dart';
 import 'package:flutter_todo_app/screens/todo/todos_screen.dart';
 import 'package:provider/provider.dart';
 import 'models/main_model.dart';
@@ -35,13 +34,13 @@ class MyApp extends StatelessWidget {
           '/sign_in': (_) => SignInScreen(),
           '/sign_up': (_) => SignUpScreen(),
           '/todos': (_) => TodosScreen(),
-          '/todos/new': (_) => AddTodoScreen(),
+          '/todos/new': (_) => TodoFormScreen(),
         },
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/todos/edit':
               return MaterialPageRoute(
-                builder: (context) => EditTodoScreen(settings.arguments),
+                builder: (context) => TodoFormScreen(todo: settings.arguments),
               );
               break;
             default:

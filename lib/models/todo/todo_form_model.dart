@@ -5,21 +5,24 @@ import 'package:flutter_todo_app/repositories/todo_repository.dart';
 class TodoFormModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String documentId;
-  String title;
+  TextEditingController titleEditingController = TextEditingController();
   bool isLoading = false;
 
   TodoFormModel(Todo todo) {
     if (todo == null) return;
 
     documentId = todo.documentId;
-    title = todo.title;
+    titleEditingController.text = todo.title;
   }
 
   Future<void> addTodo(BuildContext context) async {
     isLoading = true;
     notifyListeners();
 
-    await TodoRepository().add(context, title);
+    await TodoRepository().add(
+      context,
+      titleEditingController.text,
+    );
 
     isLoading = false;
     notifyListeners();
@@ -29,7 +32,11 @@ class TodoFormModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    await TodoRepository().edit(context, documentId, title);
+    await TodoRepository().edit(
+      context,
+      documentId,
+      titleEditingController.text,
+    );
 
     isLoading = false;
     notifyListeners();
